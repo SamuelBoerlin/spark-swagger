@@ -220,7 +220,7 @@ public class SparkSwagger {
         Config infoConfig = Optional.ofNullable(config.getConfig("spark-swagger.info")).orElseThrow(() -> new IllegalArgumentException("'spark-swagger.info' configuration is required"));
 
         if (version == null) {
-            String infoVersion = infoConfig.getString("spark-swagger.info.version");
+            String infoVersion = infoConfig.getString("version");
             if(infoVersion != null && !infoVersion.isEmpty()){
                 version = infoVersion;
             }else {
