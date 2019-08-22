@@ -1,9 +1,11 @@
 package io.github.manusant.ss.factory;
 
 import com.beerboy.spark.typify.spec.IgnoreSpec;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.manusant.ss.model.Model;
 import io.github.manusant.ss.model.ModelImpl;
 import io.github.manusant.ss.model.properties.*;
+import io.github.manusant.ss.model.utils.JacksonReflectionHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +45,7 @@ public class DefinitionsFactory {
         Map<String, Model> refDefinitions = new HashMap<>();
 
         for (Field field : fields) {
-            if (DefinitionsFactory.ignoreSpec == null || !(DefinitionsFactory.ignoreSpec.ignored(field) || DefinitionsFactory.ignoreSpec.ignoreAnnotated(field))) {                if (isViable(field)) {
+            if (shouldIgnore(field) && isViable(field)) {
                 Property property = createProperty(field, field.getType());
                 model.addProperty(field.getName(), property);
 
@@ -58,9 +60,23 @@ public class DefinitionsFactory {
                     }
                 }
             }
-            }
         }
         return refDefinitions;
+    }
+
+    /**
+     * Checks whether this field should be ignored.
+     *
+     * To ignore a field, one can annotate it with {@link JsonIgnore} or use an {@link IgnoreSpec}.
+     */
+    private static boolean shouldIgnore(Field field){
+        boolean hasJsonIgnoreAnnotation = JacksonReflectionHelper.hasAnnotation(field, JsonIgnore.class);
+        if(hasJsonIgnoreAnnotation){
+            return true;
+        }else{
+            // Former check for should **not** ignore -> inverted
+            return !(DefinitionsFactory.ignoreSpec == null || !(DefinitionsFactory.ignoreSpec.ignored(field) || DefinitionsFactory.ignoreSpec.ignoreAnnotated(field)));
+        }
     }
 
     private static boolean isViable(Field field) {
