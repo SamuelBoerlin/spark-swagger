@@ -118,6 +118,30 @@ public class SparkSwagger {
         new SwaggerHammer().prepareUi(config, swagger);
     }
 
+    /**
+     * Stores the openapi specification as JSON file at the specified location.
+     *
+     * @param file The path to store the openapi at
+     * @throws IOException If something goes wrong while writing the file
+     */
+    public void generateAndStoreDoc(final String file) throws IOException {
+        generateAndStoreDoc(file, false);
+    }
+
+    /**
+     * Generates and stores the openapi specification as a file at the given location.
+     * @param file The file to store the openapi at
+     * @param yaml Whether to use the YAML storage format {@code true} results in YAML, {@code false} results in JSON.
+     * @throws IOException If something goes wrong while writing the file
+     */
+    public void generateAndStoreDoc(final String file, final boolean yaml) throws IOException {
+        if(yaml){
+            SwaggerParser.parseYaml(swagger, file, true);
+        }else{
+            SwaggerParser.parseJson(swagger, file, true);
+        }
+    }
+
     public ApiEndpoint endpoint(final EndpointDescriptor.Builder descriptorBuilder, final Filter filter) {
         Optional.ofNullable(apiPath).orElseThrow(() -> new IllegalStateException("API Path must be specified in order to build REST endpoint"));
         EndpointDescriptor descriptor = descriptorBuilder.build();
