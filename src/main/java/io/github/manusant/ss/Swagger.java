@@ -491,6 +491,7 @@ public class Swagger {
                             requestBody.description("Body object description");
                             requestBody.setRequired(true);
                             requestBody.setSchema(model);
+                            requestBody.setName("query"); // TODO find smart way of getting the name
                             op.addParameter(requestBody);
                         }
 
