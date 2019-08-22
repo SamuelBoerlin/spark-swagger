@@ -164,8 +164,11 @@ public class DefinitionsFactory {
 
     private static Class<?> getCollectionType(Field collectionField) {
         try {
+            /* Fixes arrays not correctly parsed*/
+            if(collectionField.getType().isArray()){
+                return (Class<?>) collectionField.getType();
+            }
             ParameterizedType parameterizedType = (ParameterizedType) collectionField.getGenericType();
-
             Type actualType = parameterizedType.getActualTypeArguments()[0];
             if (actualType instanceof Class) {
                 return (Class<?>) actualType;
