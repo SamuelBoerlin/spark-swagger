@@ -32,15 +32,15 @@
     </licenses>
 
     <scm>
-        <url>https://github.com/manusant/spark-swagger</url>
-        <connection>scm:git:ssh://git@github.com:manusant/spark-swagger.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:manusant/spark-swagger.git</developerConnection>
+        <url>https://github.com/sauterl/spark-swagger</url>
+        <connection>scm:git:ssh://git@github.com:sauterl/spark-swagger.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:sauterl/spark-swagger.git</developerConnection>
         <tag>spark-swagger-1.0.0.47</tag>
     </scm>
 
     <issueManagement>
         <system>GitHub</system>
-        <url>https://github.com/manusant/spark-swagger/issues</url>
+        <url>https://github.com/sauterl/spark-swagger/issues</url>
     </issueManagement>
 
     <properties>
