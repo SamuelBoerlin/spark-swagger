@@ -2,6 +2,7 @@ package io.github.manusant.ss.descriptor;
 
 import io.github.manusant.ss.model.ExternalDocs;
 import io.github.manusant.ss.model.Tag;
+import java.util.Optional;
 import spark.utils.StringUtils;
 
 /**
@@ -23,8 +24,8 @@ public class EndpointDescriptor {
         this.path = path;
     }
 
-    public Tag getTag() {
-        return tag;
+    public Optional<Tag> getTag() {
+        return tag == null ? Optional.empty() : Optional.of(tag);
     }
 
     public void setTag(Tag tag) {
