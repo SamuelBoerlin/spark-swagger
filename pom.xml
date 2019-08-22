@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.manusant</groupId>
     <artifactId>spark-swagger</artifactId>
-    <version>1.0.0.49</version>
+    <version>1.0.0.49-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <prerequisites>
@@ -15,6 +15,11 @@
             <id>manusant</id>
             <name>Manuel Santos</name>
             <email>ney.br.santos@gmail.com</email>
+        </developer>
+        <developer>
+            <id>loris.sauter</id>
+            <name>Loris Sauter</name>
+            <email>loris.sauter@gmail.com</email>
         </developer>
     </developers>
 
@@ -92,7 +97,11 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.8.2</version>
         </dependency>
-
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.2.11</version>
+        </dependency>
         <dependency>
             <groupId>com.typesafe</groupId>
             <artifactId>config</artifactId>
@@ -153,7 +162,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>3.1.1</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
