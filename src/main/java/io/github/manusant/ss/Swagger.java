@@ -14,7 +14,6 @@ import io.github.manusant.ss.model.parameters.BodyParameter;
 import io.github.manusant.ss.model.parameters.Parameter;
 import io.github.manusant.ss.model.properties.Property;
 import io.github.manusant.ss.model.utils.PropertyModelConverter;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -455,11 +454,12 @@ public class Swagger {
         if (apiEndpoints != null) {
             apiEndpoints.forEach(endpoint -> {
                 if (ignoreSpec == null || !ignoreSpec.ignored(endpoint.getEndpointDescriptor().getPath())) {
-                    endpoint.getEndpointDescriptor().getTag().ifPresent(this::tag);
+
+                    tag(endpoint.getEndpointDescriptor().getTag());
                     endpoint.getMethodDescriptors().forEach(methodDescriptor -> {
 
                         Operation op = new Operation();
-                        endpoint.getEndpointDescriptor().getTag().ifPresent(t -> op.tag(t.getName()));
+                        op.tag(endpoint.getEndpointDescriptor().getTag().getName());
                         op.description(methodDescriptor.getDescription());
 
                         List<Parameter> parameters = ParamsFactory.create(methodDescriptor.getPath(), methodDescriptor.getParameters());
@@ -491,7 +491,6 @@ public class Swagger {
                             requestBody.description("Body object description");
                             requestBody.setRequired(true);
                             requestBody.setSchema(model);
-                            requestBody.setName("query"); // TODO find smart way of getting the name
                             op.addParameter(requestBody);
                         }
 

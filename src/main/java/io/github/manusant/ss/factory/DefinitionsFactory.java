@@ -15,6 +15,9 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
 
 /**
  * @author manusant
@@ -33,7 +36,24 @@ public class DefinitionsFactory {
             model.setType(ModelImpl.OBJECT);
             definitions.put(type.getSimpleName(), model);
 
-            Map<String, Model> refDefinitions = parseProperties(model, type.getDeclaredFields());
+			//<MODIFIED>
+			//Gather all fields of the class and its superclasses
+			List<Field> fields = new ArrayList<Field>();
+			Class cls = type;
+			while(cls != null && cls != Object.class && isObject(cls)) {
+				for(Field field : cls.getDeclaredFields()) {
+					//Check whether type is unsupported
+					if((field.getType().isArray() || Collection.class.isAssignableFrom(field.getType())) && field.getGenericType() instanceof ParameterizedType == false) {
+						LOGGER.warn("Field mapping for %s#%s not supported. Skipping.", cls.getName(), field.getName());
+						continue;
+					}
+					fields.add(field);
+				}
+				cls = cls.getSuperclass();
+			}
+            Map<String, Model> refDefinitions = parseProperties(model, fields.toArray(new Field[0]));
+			//</MODIFIED>
+			
             definitions.putAll(refDefinitions);
         }
         return definitions;
@@ -164,11 +184,8 @@ public class DefinitionsFactory {
 
     private static Class<?> getCollectionType(Field collectionField) {
         try {
-            /* Fixes arrays not correctly parsed*/
-            if(collectionField.getType().isArray()){
-                return (Class<?>) collectionField.getType();
-            }
             ParameterizedType parameterizedType = (ParameterizedType) collectionField.getGenericType();
+
             Type actualType = parameterizedType.getActualTypeArguments()[0];
             if (actualType instanceof Class) {
                 return (Class<?>) actualType;
